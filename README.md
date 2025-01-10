@@ -68,3 +68,42 @@ FIREWORKS_API_KEY=your_fireworks_key
 TOGETHER_API_KEY=your_together_key
 ANTHROPIC_API_KEY=your_anthropic_key
 GROQ_API_KEY=your_groq_key
+
+## Git Commands for Remote Server
+
+### Viewing Changes
+- To view changes in a file:
+    ```bash
+    git diff filename
+    ```
+    (Press 'q' to exit the diff view)
+
+### Handling Remote Conflicts
+If you get conflicts when pulling on the remote server, you have several options:
+
+1. To preserve remote changes:
+    ```bash
+    # Save remote changes
+    git add .
+    git commit -m "Save remote changes"
+    git pull origin main
+    ```
+
+2. To overwrite remote changes with GitHub version:
+    ```bash
+    # Discard all local changes and pull from GitHub
+    git reset --hard HEAD
+    git fetch origin
+    git reset --hard origin/main
+    ```
+
+3. To stash remote changes temporarily:
+    ```bash
+    # Save changes to stash
+    git stash save "Description of changes"
+    git pull origin main
+    # Optionally reapply stashed changes
+    git stash pop
+    ```
+
+Choose option 2 if you want to completely overwrite the remote server files with the version from GitHub.
