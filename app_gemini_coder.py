@@ -1,14 +1,15 @@
 from utils_ai_gradio import get_app
 
-# Define specific Gemini models
+# Define available Gemini/Gemma models
 GEMINI_MODELS_FULL = [
-    'gemini:gemini-2.0-flash-exp',
-    'gemini:gemini-2.0-flash-thinking-exp-1219'
+    'together:google/gemma-2-27b-it',
+    'together:google/gemma-2-9b-it',
+    'together:google/gemma-2b-it'
 ]
 
 # Create display names without the prefix
 GEMINI_MODELS_DISPLAY = [
-    k.replace('gemini:', '')
+    k.split('/')[-1].replace('-it', '')  # Clean up display names
     for k in GEMINI_MODELS_FULL
 ]
 
