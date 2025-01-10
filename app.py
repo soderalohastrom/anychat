@@ -25,8 +25,9 @@ from app_crew import demo as demo_crew
 from app_compare import demo as demo_compare
 # from app_hyperbolic import demo as demo_hyperbolic
 # from app_openai import demo as demo_openai
-from app_gemini_coder import demo as demo_gemini_coder
-from app_gemini import demo as demo_gemini
+# Temporarily disable Gemini models until fixed
+# from app_gemini_coder import demo as demo_gemini_coder
+# from app_gemini import demo as demo_gemini
 # from app_gemini_voice import demo as demo_gemini_voice
 # from app_hyperbolic_coder import demo as demo_hyperbolic_coder
 from app_smolagents import demo as demo_smolagents
@@ -39,14 +40,14 @@ load_dotenv()
 
 # Create mapping of providers to their demos
 PROVIDERS = {
-    "Gemini Coder": demo_gemini_coder,
+    # "Gemini Coder": demo_gemini_coder,  # Temporarily disabled
     # "Hyperbolic Coder": demo_hyperbolic_coder,
     "SmolAgents": demo_smolagents,
     # "DeepSeek": demo_deepseek,
     # "OpenAI": demo_openai,
     "Compare": demo_compare,
     "Qwen" : demo_qwen,
-    "Gemini": demo_gemini,
+    # "Gemini": demo_gemini,  # Temporarily disabled
     # "Gemini Voice": demo_gemini_voice,
     # "Hyperbolic": demo_hyperbolic,
     "CrewAI": demo_crew,
