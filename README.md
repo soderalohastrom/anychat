@@ -189,3 +189,31 @@ If you get conflicts when pulling on the remote server, you have several options
     ```
 
 Choose option 2 if you want to completely overwrite the remote server files with the version from GitHub.
+
+## Current Issues and Next Steps
+
+### Known Issues
+1. Gemini model integration is currently disabled due to compatibility issues with the model registry
+2. Gradio chatbot component shows deprecation warning about 'tuples' format
+3. Some models require API keys that need to be properly configured in .env
+
+### Next Steps
+1. Investigate Gemini model integration:
+   - Review Together AI provider documentation
+   - Test model availability and compatibility
+   - Implement proper error handling for model loading
+   - Re-enable Gemini models with correct configuration
+
+2. Update Gradio components:
+   - Migrate chatbot to use 'messages' format instead of deprecated 'tuples'
+   - Review and update other deprecated Gradio features
+
+3. Improve error handling:
+   - Add graceful fallbacks for unavailable models
+   - Implement better error messages for missing API keys
+   - Add health checks for model services
+
+4. Documentation:
+   - Document model-specific configuration requirements
+   - Add troubleshooting guide for common issues
+   - Update API key setup instructions
