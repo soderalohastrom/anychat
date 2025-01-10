@@ -1,12 +1,19 @@
 import ai_gradio
 from utils_ai_gradio import get_app
 
-# Define available Gemma models
+# Get available Gemma models from registry
 GEMINI_MODELS_FULL = [
-    'together:google/gemma-2-27b-it',
-    'together:google/gemma-2-9b-it',
-    'together:google/gemma-2b-it'
+    k for k in ai_gradio.registry.keys()
+    if 'gemma' in k.lower()
 ]
+
+if not GEMINI_MODELS_FULL:
+    # Fallback to hardcoded models if none found in registry
+    GEMINI_MODELS_FULL = [
+        'together:google/gemma-2-27b-it',
+        'together:google/gemma-2-9b-it',
+        'together:google/gemma-2b-it'
+    ]
 
 # Create display names without the prefix
 GEMINI_MODELS_DISPLAY = [
