@@ -17,8 +17,6 @@ GEMINI_MODELS_DISPLAY = [
 demo = get_app(
     models=GEMINI_MODELS_FULL,
     default_model=GEMINI_MODELS_FULL[0],
-    dropdown_label="Select Gemini Model",
-    choices=GEMINI_MODELS_DISPLAY,
-    fill_height=True
+    dropdown_label="Select Gemini Model"
 )
 
