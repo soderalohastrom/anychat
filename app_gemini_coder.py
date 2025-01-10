@@ -13,10 +13,15 @@ GEMINI_MODELS_DISPLAY = [
     for k in GEMINI_MODELS_FULL
 ]
 
+# Ensure there are models available
+if not GEMINI_MODELS_FULL:
+    GEMINI_MODELS_FULL = ['gemini:gemini-pro-code']
+    GEMINI_MODELS_DISPLAY = ['gemini-pro-code']
+
 # Create and launch the interface using get_app utility
 demo = get_app(
     models=GEMINI_MODELS_FULL,  # Use the full names with prefix
-    default_model=GEMINI_MODELS_FULL[-1],
+    default_model=GEMINI_MODELS_FULL[0],  # Use first model as default
     dropdown_label="Select Gemini Model",
     choices=GEMINI_MODELS_DISPLAY,  # Display names without prefix
     src=registry,
