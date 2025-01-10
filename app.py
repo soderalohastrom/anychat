@@ -17,7 +17,6 @@ from app_qwen import demo as demo_qwen
 from app_crew import demo as demo_crew
 from app_compare import demo as demo_compare
 from app_smolagents import demo as demo_smolagents
-from app_gemini import demo as demo_gemini
 from dotenv import load_dotenv
 import gradio as gr
 import os
@@ -30,7 +29,6 @@ PROVIDERS = {
     "SmolAgents": demo_smolagents,
     "Compare": demo_compare,
     "Qwen": demo_qwen,
-    "Gemini": demo_gemini,
     "CrewAI": demo_crew,
     "Cohere": demo_cohere,
     "SambaNova": demo_sambanova,
@@ -64,7 +62,7 @@ with gr.Blocks() as demo:
             from utils import get_app
             other_models = get_app(
                 models=list(PROVIDERS.keys()),
-                default_model="Gemini",
+                default_model="SmolAgents",
                 src=PROVIDERS,
                 dropdown_label="Select Provider"
             )
