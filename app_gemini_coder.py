@@ -1,5 +1,20 @@
+import os
+import google.generativeai as genai
+from dotenv import load_dotenv
 from ai_gradio.providers import registry
-from utils_ai_gradio import get_app
+
+# Load environment variables and configure Gemini
+load_dotenv()
+genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+
+# Initialize Gemini models
+GEMINI_MODELS = {
+    'gemini:gemini-pro-code': genai.GenerativeModel('gemini-pro-code'),
+}
+
+# Register models in the registry
+for model_name, model in GEMINI_MODELS.items():
+    registry[model_name] = model
 
 # Get the Gemini models but keep their full names for loading
 GEMINI_MODELS_FULL = [
@@ -18,6 +33,9 @@ if not GEMINI_MODELS_FULL:
     GEMINI_MODELS_FULL = ['gemini:gemini-pro-code']
     GEMINI_MODELS_DISPLAY = ['gemini-pro-code']
 
+# Import get_app after model registration
+from utils_ai_gradio import get_app
+
 # Create and launch the interface using get_app utility
 demo = get_app(
     models=GEMINI_MODELS_FULL,  # Use the full names with prefix
@@ -26,5 +44,5 @@ demo = get_app(
     choices=GEMINI_MODELS_DISPLAY,  # Display names without prefix
     src=registry,
     fill_height=True,
-    coder=True,
+    coder=True
 )
