@@ -19,6 +19,7 @@ with gr.Blocks(fill_height=True) as demo:
         avatar_images=(None, None),
         height=600,
         show_copy_button=True,
+        type="messages",  # Use new messages format
     )
     txt = gr.Textbox(
         scale=4,
@@ -31,13 +32,17 @@ with gr.Blocks(fill_height=True) as demo:
         if not message:
             return "", chat_history
         
-        chat_history.append((message, ""))
+        # Add user message
+        chat_history.append({"role": "user", "content": message})
+        
+        # Generate response
         response = model.generate_content(message)
         
+        # Add assistant response
         if response.text:
-            chat_history[-1] = (message, response.text)
+            chat_history.append({"role": "assistant", "content": response.text})
         else:
-            chat_history[-1] = (message, "Failed to generate response")
+            chat_history.append({"role": "assistant", "content": "Failed to generate response"})
         
         return "", chat_history
 
