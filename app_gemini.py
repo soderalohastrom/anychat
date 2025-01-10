@@ -1,17 +1,17 @@
 import ai_gradio
 from utils_ai_gradio import get_app
 
-# Print available models for debugging
-print("Available models in registry:", list(ai_gradio.registry.keys()))
+# Import Together AI provider
+from ai_gradio.providers.together_gradio import registry as together_registry
 
-# Use hardcoded models for now
+# Use Gemma models from Together AI
 GEMINI_MODELS_FULL = [
-    'together:google/gemma-2-27b-it',
-    'together:google/gemma-2-9b-it',
-    'together:google/gemma-2b-it'
+    'google/gemma-2-27b-it',
+    'google/gemma-2-9b-it',
+    'google/gemma-2b-it'
 ]
 
-# Create display names without the prefix
+# Create display names without the path
 GEMINI_MODELS_DISPLAY = [
     k.split('/')[-1].replace('-it', '')  # Clean up display names
     for k in GEMINI_MODELS_FULL
@@ -22,6 +22,6 @@ demo = get_app(
     models=GEMINI_MODELS_FULL,
     default_model=GEMINI_MODELS_FULL[0],  # Use the largest model as default
     dropdown_label="Select Gemma Model",
-    src=ai_gradio.registry
+    src=together_registry
 )
 
