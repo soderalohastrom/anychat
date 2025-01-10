@@ -46,6 +46,23 @@ This document outlines the steps taken to set up the AnyChat web application on 
     sudo systemctl status anychat
     ```
 
+## Remote Service Management
+
+To manage the service from your local machine using SSH:
+
+```bash
+# Reload systemd, restart service, and check status in one command:
+ssh scott@147.93.45.244 "sudo systemctl daemon-reload && sudo systemctl restart anychat && sudo systemctl status anychat"
+
+# View logs remotely:
+ssh scott@147.93.45.244 "journalctl -u anychat.service -b"
+```
+
+This works because:
+1. SSH key authentication allows passwordless login
+2. The 'scott' user has sudo privileges
+3. Commands can be chained with && to execute in sequence
+
 ## Viewing Logs
 
 -   To view the service logs, use:
@@ -68,6 +85,71 @@ FIREWORKS_API_KEY=your_fireworks_key
 TOGETHER_API_KEY=your_together_key
 ANTHROPIC_API_KEY=your_anthropic_key
 GROQ_API_KEY=your_groq_key
+
+## Web Server Configuration
+
+### Nginx Setup
+The application uses Nginx to serve both a static landing page and the Gradio interface:
+
+1. Install Nginx:
+    ```bash
+    sudo apt update && sudo apt install -y nginx
+    ```
+
+2. Create a basic landing page:
+    ```bash
+    echo '<html><body><h1>Under Construction</h1><p>Coming Soon: Paumalu Innovations</p></body></html>' | sudo tee /var/www/html/index.html
+    ```
+
+3. Configure Nginx to serve both the landing page and proxy to the Gradio app:
+    ```bash
+    # Create Nginx configuration
+    cat > /etc/nginx/sites-available/paumalu-innovations.online << 'EOL'
+    server {
+        listen 80;
+        server_name paumalu-innovations.online;
+
+        # Serve static landing page at root
+        location / {
+            root /var/www/html;
+            index index.html;
+        }
+
+        # Proxy /anychat/ to Gradio interface
+        location /anychat/ {
+            proxy_pass http://127.0.0.1:7860/;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+    EOL
+
+    # Enable the site
+    ln -sf /etc/nginx/sites-available/paumalu-innovations.online /etc/nginx/sites-enabled/
+    
+    # Test and restart Nginx
+    nginx -t && systemctl restart nginx
+    ```
+
+### Gradio Interface Configuration
+The Gradio interface is configured in app.py to be externally accessible:
+
+```python
+if __name__ == "__main__":
+    demo.queue(api_open=False).launch(
+        server_name="0.0.0.0",  # Make server externally visible
+        server_port=7860,       # Default Gradio port
+        share=False,            # Don't use Gradio's sharing service
+        show_api=False
+    )
+```
+
+This configuration makes the interface available at:
+- Landing Page: http://paumalu-innovations.online/
+- Gradio Interface: http://paumalu-innovations.online/anychat/
 
 ## Git Commands for Remote Server
 
