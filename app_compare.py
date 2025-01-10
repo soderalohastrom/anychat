@@ -170,9 +170,9 @@ def multi_model_consensus(
                 api_key = os.getenv("GEMINI_API_KEY")
                 response = chat_with_gemini(messages=[{"role": "user", "content": question}], api_key=api_key)
 
-            chat_history.append((model, response))
+            chat_history.append({"role": "assistant", "content": response, "name": model})
         except Exception as e:
-            chat_history.append((model, f"Error: {str(e)}"))
+            chat_history.append({"role": "assistant", "content": f"Error: {str(e)}", "name": model})
 
     progress(1.0, desc="Done!")
     return chat_history
@@ -194,7 +194,7 @@ with gr.Blocks() as demo:
                 value=["SambaNova: Llama-3.2-90B-Vision-Instruct", "Hyperbolic: Qwen/Qwen2.5-Coder-32B-Instruct"],
             )
 
-    chatbot = gr.Chatbot(height=600, label="Model Responses")
+    chatbot = gr.Chatbot(height=600, label="Model Responses", type='messages')
     msg = gr.Textbox(label="Prompt", placeholder="Ask a question to compare model responses...")
 
     def respond(message, selected_models):

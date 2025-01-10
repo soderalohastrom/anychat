@@ -168,9 +168,9 @@ def multi_model_consensus(
 
             initial_responses.append(f"{model}: {response}")
             discussion_history.append(f"Initial response from {model}:\n{response}")
-            chat_history.append((f"Initial response from {model}", response))
+            chat_history.append({"role": "assistant", "content": response, "name": f"Initial response from {model}"})
         except Exception as e:
-            chat_history.append((f"Error from {model}", str(e)))
+            chat_history.append({"role": "assistant", "content": f"Error: {str(e)}", "name": f"Error from {model}"})
 
     # Discussion rounds
     for round_num in range(rounds):
@@ -210,9 +210,9 @@ def multi_model_consensus(
 
                 round_responses.append(f"{model}: {response}")
                 discussion_history.append(f"Round {round_num + 1} - {model}:\n{response}")
-                chat_history.append((f"Round {round_num + 1} - {model}", response))
+                chat_history.append({"role": "assistant", "content": response, "name": f"Round {round_num + 1} - {model}"})
             except Exception as e:
-                chat_history.append((f"Error from {model} in round {round_num + 1}", str(e)))
+                chat_history.append({"role": "assistant", "content": f"Error: {str(e)}", "name": f"Error from {model} in round {round_num + 1}"})
 
     # Final consensus
     progress(0.9, desc="Building final consensus...")
@@ -247,8 +247,8 @@ def multi_model_consensus(
             )
     except Exception as e:
         final_consensus = f"Error getting consensus from {model}: {str(e)}"
-
-    chat_history.append(("Final Consensus", final_consensus))
+    
+    chat_history.append({"role": "assistant", "content": final_consensus, "name": "Final Consensus"})
 
     progress(1.0, desc="Done!")
     return chat_history
@@ -281,7 +281,7 @@ with gr.Blocks() as demo:
                 info="Number of rounds of discussion between models",
             )
 
-    chatbot = gr.Chatbot(height=600, label="Multi-Model Discussion")
+    chatbot = gr.Chatbot(height=600, label="Multi-Model Discussion", type='messages')
     msg = gr.Textbox(label="Your Question", placeholder="Ask a question for the models to discuss...")
 
     def respond(message, selected_models, rounds):
