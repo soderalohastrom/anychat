@@ -76,4 +76,9 @@ PROVIDERS = {
 demo = get_app(models=list(PROVIDERS.keys()), default_model="Gemini Coder", src=PROVIDERS, dropdown_label="Select Provider")
 
 if __name__ == "__main__":
-    demo.queue(api_open=False).launch(show_api=False)
+    demo.queue(api_open=False).launch(
+        server_name="0.0.0.0",  # Make server externally visible
+        server_port=7860,       # Default Gradio port
+        share=False,            # Don't use Gradio's sharing service
+        show_api=False
+    )
