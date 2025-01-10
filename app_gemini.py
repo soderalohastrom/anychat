@@ -1,25 +1,24 @@
 import ai_gradio
 from utils_ai_gradio import get_app
 
-# Get the Gemini models but keep their full names for loading
+# Define available Gemma models
 GEMINI_MODELS_FULL = [
-    k for k in ai_gradio.registry.keys()
-    if k.startswith('gemini:')
+    'together:google/gemma-2-27b-it',
+    'together:google/gemma-2-9b-it',
+    'together:google/gemma-2b-it'
 ]
 
 # Create display names without the prefix
 GEMINI_MODELS_DISPLAY = [
-    k.replace('gemini:', '')
+    k.split('/')[-1].replace('-it', '')  # Clean up display names
     for k in GEMINI_MODELS_FULL
 ]
 
 # Create and launch the interface using get_app utility
 demo = get_app(
-    models=GEMINI_MODELS_FULL,  # Use the full names with prefix
-    default_model=GEMINI_MODELS_FULL[-1],
-    dropdown_label="Select Gemini Model",
-    choices=GEMINI_MODELS_DISPLAY,  # Display names without prefix
-    src=ai_gradio.registry,
-    fill_height=True,
+    models=GEMINI_MODELS_FULL,
+    default_model=GEMINI_MODELS_FULL[0],  # Use the largest model as default
+    dropdown_label="Select Gemma Model",
+    src=ai_gradio.registry
 )
 
