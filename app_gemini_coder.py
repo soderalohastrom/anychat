@@ -1,10 +1,9 @@
-import ai_gradio
 from utils_ai_gradio import get_app
 
-# Get the Gemini models but keep their full names for loading
+# Define specific Gemini models
 GEMINI_MODELS_FULL = [
-    k for k in ai_gradio.registry.keys()
-    if k.startswith('gemini:')
+    'gemini:gemini-2.0-flash-exp',
+    'gemini:gemini-2.0-flash-thinking-exp-1219'
 ]
 
 # Create display names without the prefix
@@ -15,11 +14,10 @@ GEMINI_MODELS_DISPLAY = [
 
 # Create and launch the interface using get_app utility
 demo = get_app(
-    models=GEMINI_MODELS_FULL,  # Use the full names with prefix
-    default_model=GEMINI_MODELS_FULL[-1],
+    models=GEMINI_MODELS_FULL,
+    default_model=GEMINI_MODELS_FULL[0],
     dropdown_label="Select Gemini Model",
-    choices=GEMINI_MODELS_DISPLAY,  # Display names without prefix
-    src=ai_gradio.registry,
+    choices=GEMINI_MODELS_DISPLAY,
     fill_height=True,
     coder=True,
 )
