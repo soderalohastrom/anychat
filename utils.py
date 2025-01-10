@@ -23,7 +23,12 @@ def get_app(
                 if isinstance(src, dict):
                     src[model_name].render()
                 else:
-                    gr.load(name=model_name, src=src, accept_token=accept_token, **kwargs)
+                    # Filter out unsupported parameters
+                    supported_kwargs = {
+                        k: v for k, v in kwargs.items()
+                        if k not in ['coder', 'choices', 'fill_height']
+                    }
+                    gr.load(name=model_name, src=src, accept_token=accept_token, **supported_kwargs)
             columns.append(column)
 
         model.change(
